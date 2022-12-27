@@ -1,16 +1,32 @@
+from typing import List
 from fastapi import APIRouter
 from fastapi import Depends
 from sqlalchemy.orm import Session
 from service.dependencies import get_db
+from service.managers.permissions import PermissionsManager
+from service.orm.feature_group import FeatureGroupModel
 
 
 router = APIRouter()
 
 
-@router.get("/permissions/tenant/{tenant_id}/user/{user_id}")
+@router.get(
+    "/feature-groups",
+    response_model=List[FeatureGroupModel],
+)
+async def get_feature_groups(db: Session = Depends(get_db)):
+    manager = PermissionsManager(db)
+    groups = await manager.get_feature_groups()
+
+    return groups
+
+
+@router.get(
+    "/tenant/{tenant_id}/permissions/user/{user_id}",
+    response_model=List[FeatureGroupModel],
+)
 async def permissions(tenant_id: int, user_id: int, db: Session = Depends(get_db)):
-    return {
-        "bla": "tra",
-        "tenant_id": tenant_id,
-        "user_id": user_id,
-    }
+    manager = PermissionsManager(db)
+    groups = await manager.get_feature_groups()
+
+    return groups
