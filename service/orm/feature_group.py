@@ -20,11 +20,3 @@ class FeatureGroupModel:
     id: int = field(init=False)
     name: str
     field_name: str
-
-
-# class FeatureGroupORM(Base):
-#     __tablename__ = "feature_groups"
-
-#     id = Column(Integer, primary_key=True, index=True)
-#     name = Column(String)
-#     field_name = Column(String)
