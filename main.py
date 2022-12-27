@@ -1,6 +1,11 @@
-from service.config import settings
+from fastapi import FastAPI
+from service.database import engine, Base
+from service.routers import ping
+from service.routers import permissions
 
 
-print("Hello world")
+Base.metadata.create_all(bind=engine)
 
-print(settings)
+app = FastAPI()
+app.include_router(ping.router)
+app.include_router(permissions.router)
