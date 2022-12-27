@@ -8,3 +8,7 @@ class FeatureGroupDTO(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class GetFeatureGroupsResponse(BaseModel):
+    feature_groups: list[FeatureGroupDTO]

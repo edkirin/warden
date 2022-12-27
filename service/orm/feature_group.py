@@ -1,6 +1,9 @@
+from __future__ import annotations
+
 from dataclasses import field, dataclass
-from typing import Optional
-from sqlalchemy import Table, Column, Integer, String
+from typing import AsyncIterator
+from sqlalchemy import Table, Column, Integer, String, select
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import registry
 
 mapper_registry = registry()
@@ -20,3 +23,10 @@ class FeatureGroupModel:
     id: int = field(init=False)
     name: str
     field_name: str
+
+    @classmethod
+    async def read_all(cls, session: AsyncSession) -> AsyncIterator[FeatureGroupModel]:
+        stmt = select(cls)
+        stream = await session.stream(stmt.order_by(cls.id))
+        async for row in stream:
+            yield row.FeatureGroupModel
