@@ -1,11 +1,10 @@
-from typing import List
 from fastapi import APIRouter
 from fastapi import Depends
 from service.api.permissions.schema import (
     GetFeatureGroupsFeaturesResponse,
     GetFeatureGroupsResponse,
 )
-from service.api.permissions.use_cases import (
+from service.api.permissions.controllers import (
     ReadAllFeatureGroups,
     ReadFeatureGroupFeatures,
 )
@@ -19,9 +18,9 @@ router = APIRouter()
     response_model=GetFeatureGroupsResponse,
 )
 async def get_feature_groups(
-    use_case: ReadAllFeatureGroups = Depends(ReadAllFeatureGroups),
+    controller: ReadAllFeatureGroups = Depends(ReadAllFeatureGroups),
 ):
-    feature_groups = use_case.execute()
+    feature_groups = controller.execute()
     return GetFeatureGroupsResponse(
         feature_groups=[feature_group async for feature_group in feature_groups],
     )
@@ -33,9 +32,9 @@ async def get_feature_groups(
 )
 async def get_feature_group_features(
     feature_group_id: int,
-    use_case: ReadFeatureGroupFeatures = Depends(ReadFeatureGroupFeatures),
+    controller: ReadFeatureGroupFeatures = Depends(ReadFeatureGroupFeatures),
 ):
-    features = use_case.execute(feature_group_id=feature_group_id)
+    features = controller.execute(feature_group_id=feature_group_id)
     return GetFeatureGroupsFeaturesResponse(
         features=[feature async for feature in features],
     )
