@@ -1,10 +1,10 @@
 from fastapi import APIRouter
 from fastapi import Depends
-from service.api.permissions.schema import (
+from service.api.admin.schema import (
     GetFeatureGroupsFeaturesResponse,
     GetFeatureGroupsResponse,
 )
-from service.api.permissions.controllers import (
+from service.api.admin.controllers import (
     ReadAllFeatureGroups,
     ReadFeatureGroupFeatures,
 )

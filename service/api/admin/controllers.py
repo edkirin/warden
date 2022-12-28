@@ -1,15 +1,9 @@
 from typing import AsyncIterator
 
-from fastapi import Depends
-from service.api.permissions.schema import FeatureDTO, FeatureGroupDTO
-from service.database import AsyncSessionClass, get_session
+from service.api.common.controller_base import ControllerBase
+from service.api.admin.schema import FeatureDTO, FeatureGroupDTO
 from service.orm.feature import FeatureModel
 from service.orm.feature_group import FeatureGroupModel
-
-
-class ControllerBase:
-    def __init__(self, session: AsyncSessionClass = Depends(get_session)) -> None:
-        self.async_session = session
 
 
 class ReadAllFeatureGroups(ControllerBase):
