@@ -6,7 +6,6 @@ from sqlalchemy import Table, Column, Integer, String, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import relationship
 
-from .base import Base
 from .base import mapper_registry
 
 # from .feature import FeatureModel
@@ -23,7 +22,8 @@ class FeatureGroupModel:
         Column("field_name", String),
     )
 
-    id: int = field(init=False)
+    # id: int = field(init=False)
+    id: int
     name: str
     field_name: str
     # features: list[FeatureModel]

@@ -6,7 +6,6 @@ from sqlalchemy import Table, Column, Integer, String, ForeignKey, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import relationship, selectinload
 
-from .base import Base
 from .base import mapper_registry
 
 from .feature_group import FeatureGroupModel
@@ -30,7 +29,7 @@ class FeatureModel:
     feature_group_id: int
     feature_group: FeatureGroupModel
 
-    __mapper_args__ = {  # type ignore
+    __mapper_args__ = {
         "properties": {
             "feature_group": relationship(FeatureGroupModel),
         },
