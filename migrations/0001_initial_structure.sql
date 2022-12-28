@@ -44,7 +44,7 @@ CREATE TABLE public.user_permissions (
 	id serial4 NOT NULL,
 	user_id int8 NOT NULL,
 	feature_id int8 NOT NULL,
-	"action" int8 NOT NULL,
+	"action" public.action_enum NOT NULL,
 	permitted bool NOT NULL,
 	CONSTRAINT user_permissions_pkey PRIMARY KEY (id),
 	CONSTRAINT user_permissions_un UNIQUE (feature_id, action),

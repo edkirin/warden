@@ -7,7 +7,7 @@ from sqlalchemy.orm import selectinload, relationship
 
 from . import FeatureModel
 from .base import Base
-from ..api.enums import ActionEnum
+from service.api.enums import ActionEnum
 
 
 class FeatureActionModel(Base):

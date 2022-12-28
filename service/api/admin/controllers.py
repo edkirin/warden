@@ -3,7 +3,7 @@ from typing import AsyncIterator, Optional
 from service.api.common.controller_base import ControllerBase
 from service.api.admin.schema import FeatureDTO
 from service.dto.models import RoleDTO
-from service.orm import FeatureActionModel
+from service.orm import FeatureActionModel, UserModel, UserPermissionModel, RolePermissionModel
 from service.orm.feature import FeatureModel
 from service.orm.role import RoleModel
 
@@ -27,6 +27,9 @@ class ReadRoles(ControllerBase):
 class DeleteAllData(ControllerBase):
     async def execute(self) -> None:
         async with self.async_session() as session:
+            await UserPermissionModel.delete_all(session)
+            await RolePermissionModel.delete_all(session)
+            await UserModel.delete_all(session)
             await RoleModel.delete_all(session)
             await FeatureActionModel.delete_all(session)
             await FeatureModel.delete_all(session)
