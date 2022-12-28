@@ -1,3 +1,7 @@
+from __future__ import annotations
+
+from typing import Optional
+
 from pydantic import BaseModel
 
 
@@ -6,17 +10,11 @@ class BaseDTO(BaseModel):
         orm_mode = True
 
 
-class FeatureGroupDTO(BaseDTO):
-    id: int
-    name: str
-    field_name: str
-
-
 class FeatureDTO(BaseDTO):
     id: int
     name: str
     field_name: str
-    feature_group: FeatureGroupDTO
+    parent: Optional[FeatureDTO]
 
 
 class RoleDTO(BaseDTO):

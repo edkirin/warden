@@ -1,11 +1,7 @@
 from pydantic import BaseModel
 
-from service.dto.models import FeatureGroupDTO, FeatureDTO
+from service.dto.models import FeatureDTO
 
 
-class GetFeatureGroupsResponse(BaseModel):
-    feature_groups: list[FeatureGroupDTO]
-
-
-class GetFeatureGroupsFeaturesResponse(BaseModel):
+class GetFeaturesResponse(BaseModel):
     features: list[FeatureDTO]

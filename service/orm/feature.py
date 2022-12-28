@@ -1,50 +1,40 @@
 from __future__ import annotations
 
-from dataclasses import field, dataclass
 from typing import AsyncIterator, Optional
-from sqlalchemy import Table, Column, Integer, String, ForeignKey, select, delete
+from sqlalchemy import Column, Integer, String, ForeignKey, select, delete
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import relationship, selectinload
+from sqlalchemy.orm import relationship, joinedload
 
-from .base import mapper_registry
-
-from .feature_group import FeatureGroupModel
+from .base import Base
 
 
-@mapper_registry.mapped
-@dataclass
-class FeatureModel:
-    __table__ = Table(
-        "features",
-        mapper_registry.metadata,
-        Column("id", Integer, primary_key=True),
-        Column("name", String),
-        Column("field_name", String),
-        Column("feature_group_id", Integer, ForeignKey("feature_groups.id")),
-    )
+class FeatureModel(Base):
+    __tablename__ = "features"
 
-    id: int
-    name: str
-    field_name: str
-    feature_group: FeatureGroupModel
+    id: int = Column(Integer, primary_key=True)
+    parent_id: Optional[int] = Column(Integer, ForeignKey("features.id"), nullable=True)
+    name: str = Column(String)
+    field_name: str = Column(String)
 
-    __mapper_args__ = {
-        "properties": {
-            "feature_group": relationship(FeatureGroupModel),
-        },
-    }
+    parent: FeatureModel = relationship("FeatureModel", back_populates="children", uselist=False)
+    children: FeatureModel = relationship("FeatureModel")
 
     @classmethod
     async def read_all(
-        cls, session: AsyncSession, feature_group_id: Optional[int] = None
+        cls, session: AsyncSession, parent_id: Optional[int] = None
     ) -> AsyncIterator[FeatureModel]:
-        stmt = select(cls).options(selectinload(cls.feature_group))
+        stmt = (
+            select(cls)
+            .execution_options(populate_existing=True)
+            .options(joinedload(cls.parent))
+        )
 
-        if feature_group_id is not None:
-            stmt = stmt.where(cls.feature_group_id == feature_group_id)
+        if parent_id is not None:
+            stmt = stmt.where(cls.parent_id == parent_id)
 
         stream = await session.stream(stmt.order_by(cls.id))
-        async for row in stream:
+
+        async for row in stream.unique():
             yield row.FeatureModel
 
     @classmethod

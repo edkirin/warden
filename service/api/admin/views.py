@@ -1,12 +1,10 @@
 from fastapi import APIRouter
 from fastapi import Depends
 from service.api.admin.schema import (
-    GetFeatureGroupsFeaturesResponse,
-    GetFeatureGroupsResponse,
+    GetFeaturesResponse,
 )
 from service.api.admin.controllers import (
-    ReadAllFeatureGroups,
-    ReadFeatureGroupFeatures, DeleteAllData,
+    ReadFeatures, DeleteAllData,
 )
 from service.factories.create_default_data import create_default_data
 
@@ -14,28 +12,14 @@ router = APIRouter()
 
 
 @router.get(
-    "/feature-groups",
-    response_model=GetFeatureGroupsResponse,
-)
-async def get_feature_groups(
-    controller: ReadAllFeatureGroups = Depends(ReadAllFeatureGroups),
-):
-    feature_groups = controller.execute()
-    return GetFeatureGroupsResponse(
-        feature_groups=[feature_group async for feature_group in feature_groups],
-    )
-
-
-@router.get(
-    "/feature-groups/{feature_group_id}/features",
-    response_model=GetFeatureGroupsFeaturesResponse,
+    "/features",
+    response_model=GetFeaturesResponse,
 )
 async def get_feature_group_features(
-    feature_group_id: int,
-    controller: ReadFeatureGroupFeatures = Depends(ReadFeatureGroupFeatures),
+    controller: ReadFeatures = Depends(ReadFeatures),
 ):
-    features = controller.execute(feature_group_id=feature_group_id)
-    return GetFeatureGroupsFeaturesResponse(
+    features = controller.execute()
+    return GetFeaturesResponse(
         features=[feature async for feature in features],
     )
 
