@@ -140,8 +140,6 @@ def create_users_group() -> UsersGroup:
 
 
 def create_default_data():
-    role_guest = RoleFactory(name="Guest")
-    role_customer_support = RoleFactory(name="Customer Support")
     role_filler = RoleFactory(name="Filler")
     role_service = RoleFactory(name="Service")
     role_service_manager = RoleFactory(name="Service Manager")
@@ -159,7 +157,8 @@ def create_default_data():
     products_group = create_products_group()
     users_group = create_users_group()
 
-    RolePermissionFactory(role=role_guest, feature=machines_group.machines_feature, action=ActionEnum.VIEW, permitted=True)
+    role_guest = RoleFactory(name="Guest")
+    RolePermissionFactory(role=role_guest, feature=machines_group.machines_feature, action=ActionEnum.VIEW, permitted=False)
     RolePermissionFactory(role=role_guest, feature=machines_group.machines_feature, action=ActionEnum.EDIT, permitted=False)
     RolePermissionFactory(role=role_guest, feature=machines_group.devices_feature, action=ActionEnum.VIEW, permitted=True)
     RolePermissionFactory(role=role_guest, feature=machines_group.devices_feature, action=ActionEnum.EDIT, permitted=False)
@@ -171,3 +170,13 @@ def create_default_data():
     RolePermissionFactory(role=role_guest, feature=machines_group.planogram_analysis_feature, action=ActionEnum.EDIT, permitted=False)
     RolePermissionFactory(role=role_guest, feature=machines_group.machine_meter_readings_feature, action=ActionEnum.VIEW, permitted=True)
     RolePermissionFactory(role=role_guest, feature=machines_group.machine_meter_readings_feature, action=ActionEnum.EDIT, permitted=False)
+
+    role_customer_support = RoleFactory(name="Customer Support")
+    RolePermissionFactory(role=role_customer_support, feature=machines_group.machines_feature, action=ActionEnum.VIEW, permitted=False)
+    RolePermissionFactory(role=role_customer_support, feature=machines_group.machines_feature, action=ActionEnum.EDIT, permitted=False)
+    RolePermissionFactory(role=role_customer_support, feature=machines_group.devices_feature, action=ActionEnum.VIEW, permitted=True)
+    RolePermissionFactory(role=role_customer_support, feature=machines_group.devices_feature, action=ActionEnum.EDIT, permitted=False)
+
+    user1 = UserFactory(tenant_id=666, user_id=123, role=role_guest)
+    UserPermissionFactory(user=user1, feature=machines_group.machines_feature, action=ActionEnum.VIEW, permitted=True)
+    UserPermissionFactory(user=user1, feature=machines_group.machines_feature, action=ActionEnum.EDIT, permitted=True)

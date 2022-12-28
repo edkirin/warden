@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import AsyncIterator
+from typing import AsyncIterator, Optional
 
 from sqlalchemy import Column, ForeignKey, Integer, delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -20,14 +20,22 @@ class UserModel(Base):
     role: RoleModel = relationship("RoleModel", uselist=False)
 
     @classmethod
+    async def get_by_user_id(
+        cls, session: AsyncSession, tenant_id: int, user_id: int
+    ) -> Optional[UserModel]:
+        query = select(cls).where(cls.tenant_id == tenant_id, cls.user_id == user_id)
+        result = (await session.execute(query)).first()
+        return result.UserModel if result else None
+
+    @classmethod
     async def read_all(cls, session: AsyncSession) -> AsyncIterator[UserModel]:
-        stmt = select(cls).options(selectinload(cls.feature_group))
-        stream = await session.stream(stmt.order_by(cls.id))
+        query = select(cls).options(selectinload(cls.feature_group))
+        stream = await session.stream(query.order_by(cls.id))
         async for row in stream:
             yield row.UserModel
 
     @classmethod
     async def delete_all(cls, session: AsyncSession) -> None:
-        stmt = delete(cls)
-        await session.execute(stmt)
+        query = delete(cls)
+        await session.execute(query)
         await session.commit()

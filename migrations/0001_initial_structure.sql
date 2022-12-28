@@ -34,7 +34,7 @@ CREATE TABLE public.role_permissions (
 	"action" public.action_enum NOT NULL,
 	permitted bool NOT NULL,
 	CONSTRAINT role_permissions_pkey PRIMARY KEY (id),
-	CONSTRAINT role_permissions_un UNIQUE (feature_id, action),
+	CONSTRAINT role_permissions_un UNIQUE (role_id, feature_id, action),
 	CONSTRAINT role_permissions_role_fk FOREIGN KEY (role_id) REFERENCES public.roles(id),
 	CONSTRAINT role_permissions_feature_fk FOREIGN KEY (feature_id) REFERENCES public.features(id)
 );
@@ -47,7 +47,7 @@ CREATE TABLE public.user_permissions (
 	"action" public.action_enum NOT NULL,
 	permitted bool NOT NULL,
 	CONSTRAINT user_permissions_pkey PRIMARY KEY (id),
-	CONSTRAINT user_permissions_un UNIQUE (feature_id, action),
+	CONSTRAINT user_permissions_un UNIQUE (user_id, feature_id, action),
 	CONSTRAINT user_permissions_user_fk FOREIGN KEY (user_id) REFERENCES public.users(id),
 	CONSTRAINT user_permissions_feature_fk FOREIGN KEY (feature_id) REFERENCES public.features(id)
 );

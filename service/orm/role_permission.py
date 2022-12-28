@@ -25,25 +25,31 @@ class RolePermissionModel(Base):
     feature: FeatureModel = relationship("FeatureModel", uselist=False)
 
     @classmethod
-    async def read_all(
-        cls, session: AsyncSession, parent_id: Optional[int] = None
+    async def get_by_id(
+        cls, session: AsyncSession, id_: int
+    ) -> Optional[RolePermissionModel]:
+        query = select(cls).where(cls.id == id_)
+        result = (await session.execute(query)).first()
+        return result.RolePermissionModel if result else None
+
+    @classmethod
+    async def read_for_role_id(
+        cls, session: AsyncSession, role_id: int
     ) -> AsyncIterator[RolePermissionModel]:
-        stmt = (
-            select(cls)
-            .execution_options(populate_existing=True)
-            .options(joinedload(cls.parent))
-        )
+        query = select(cls).where(cls.role_id == role_id)
+        stream = await session.stream(query.order_by(cls.id))
+        async for row in stream:
+            yield row.RolePermissionModel
 
-        if parent_id is not None:
-            stmt = stmt.where(cls.parent_id == parent_id)
-
-        stream = await session.stream(stmt.order_by(cls.id))
-
-        async for row in stream.unique():
+    @classmethod
+    async def read_all(cls, session: AsyncSession) -> AsyncIterator[RolePermissionModel]:
+        query = select(cls)
+        stream = await session.stream(query.order_by(cls.id))
+        async for row in stream:
             yield row.RolePermissionModel
 
     @classmethod
     async def delete_all(cls, session: AsyncSession) -> None:
-        stmt = delete(cls)
-        await session.execute(stmt)
+        query = delete(cls)
+        await session.execute(query)
         await session.commit()

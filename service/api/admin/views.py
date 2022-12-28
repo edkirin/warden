@@ -1,11 +1,7 @@
-from fastapi import APIRouter
-from fastapi import Depends
-from service.api.admin.schema import (
-    GetFeaturesResponse,
-)
-from service.api.admin.controllers import (
-    ReadFeatures, DeleteAllData,
-)
+from fastapi import APIRouter, Depends
+
+from service.api.admin.controllers import DeleteAllData, ReadFeatures
+from service.api.admin.schema import GetFeaturesResponse
 from service.factories.create_default_data import create_default_data
 
 router = APIRouter()
@@ -40,16 +36,3 @@ async def delete_all_data(
 ):
     await controller.execute()
     return {}
-
-
-# @router.get(
-#     "/tenant/{tenant_id}/permissions/user/{user_id}",
-#     response_model=List[FeatureGroupModel],
-# )
-# async def permissions(tenant_id: int, user_id: int, session: Session = Depends(get_db)):
-#     manager = PermissionsManager(session)
-#     groups = await manager.get_feature_groups()
-
-#     groups_response = [FeatureGroupDTO.from_orm(group) for group in groups]
-
-#     return groups_response
