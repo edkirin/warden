@@ -2,7 +2,6 @@ import factory
 from sqlalchemy import orm, create_engine
 from sqlalchemy.orm import sessionmaker
 
-from service.database import AsyncSessionLocal
 from service.config import settings
 
 

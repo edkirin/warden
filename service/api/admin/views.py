@@ -6,9 +6,9 @@ from service.api.admin.schema import (
 )
 from service.api.admin.controllers import (
     ReadAllFeatureGroups,
-    ReadFeatureGroupFeatures,
+    ReadFeatureGroupFeatures, DeleteAllData,
 )
-
+from service.factories.create_default_data import create_default_data
 
 router = APIRouter()
 
@@ -38,6 +38,24 @@ async def get_feature_group_features(
     return GetFeatureGroupsFeaturesResponse(
         features=[feature async for feature in features],
     )
+
+
+@router.post("/initial")
+async def create_initial_data(
+    delete_all_data_controller: DeleteAllData = Depends(DeleteAllData),
+):
+    await delete_all_data_controller.execute()
+
+    create_default_data()
+    return {}
+
+
+@router.delete("/initial")
+async def delete_all_data(
+    controller: DeleteAllData = Depends(DeleteAllData),
+):
+    await controller.execute()
+    return {}
 
 
 # @router.get(

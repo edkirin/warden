@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import field, dataclass
 from typing import AsyncIterator, Optional
-from sqlalchemy import Table, Column, Integer, String, ForeignKey, select
+from sqlalchemy import Table, Column, Integer, String, ForeignKey, select, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import relationship, selectinload
 
@@ -23,10 +23,9 @@ class FeatureModel:
         Column("feature_group_id", Integer, ForeignKey("feature_groups.id")),
     )
 
-    id: int = field(init=False)
+    id: int
     name: str
     field_name: str
-    feature_group_id: int
     feature_group: FeatureGroupModel
 
     __mapper_args__ = {
@@ -47,3 +46,9 @@ class FeatureModel:
         stream = await session.stream(stmt.order_by(cls.id))
         async for row in stream:
             yield row.FeatureModel
+
+    @classmethod
+    async def delete_all(cls, session: AsyncSession) -> None:
+        stmt = delete(cls)
+        await session.execute(stmt)
+        await session.commit()

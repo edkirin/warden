@@ -18,3 +18,7 @@ class FeatureDTO(BaseDTO):
     field_name: str
     feature_group: FeatureGroupDTO
 
+
+class RoleDTO(BaseDTO):
+    id: int
+    name: str
