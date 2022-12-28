@@ -10,7 +10,7 @@ CREATE TABLE public.features (
 	id serial4 NOT NULL,
 	parent_id int8 NULL,
 	"name" varchar(30) NOT NULL,
-	field_name varchar(30) NOT NULL,
+	field_name varchar(100) NOT NULL,
 	CONSTRAINT features_pk PRIMARY KEY (id),
 	CONSTRAINT features_fk FOREIGN KEY (parent_id) REFERENCES public.features(id) ON DELETE SET NULL
 );

@@ -33,10 +33,9 @@ class UsersGroup:
 def create_machines_group() -> MachinesGroup:
     result = MachinesGroup()
 
-    result.group = FeatureFactory.create(name="Machines", field_name="machines")
+    result.group = FeatureFactory.create(name="Machines")
     result.machines_feature = FeatureFactory(
         name="Machines",
-        field_name="machines",
         parent=result.group,
     )
     FeatureActionFactory(feature=result.machines_feature, action=ActionEnum.VIEW)
@@ -44,7 +43,6 @@ def create_machines_group() -> MachinesGroup:
 
     result.devices_feature = FeatureFactory(
         name="Devices",
-        field_name="devices",
         parent=result.group,
     )
     FeatureActionFactory(feature=result.devices_feature, action=ActionEnum.VIEW)
@@ -52,7 +50,6 @@ def create_machines_group() -> MachinesGroup:
 
     result.machine_stock_feature = FeatureFactory(
         name="Machine Stock",
-        field_name="machine_stock",
         parent=result.group,
     )
     FeatureActionFactory(feature=result.machine_stock_feature, action=ActionEnum.VIEW)
@@ -60,7 +57,6 @@ def create_machines_group() -> MachinesGroup:
 
     result.machine_planograms_feature = FeatureFactory(
         name="Machine Planograms",
-        field_name="machine_planograms",
         parent=result.group,
     )
     FeatureActionFactory(
@@ -72,7 +68,6 @@ def create_machines_group() -> MachinesGroup:
 
     result.planogram_analysis_feature = FeatureFactory(
         name="Planogram Analysis",
-        field_name="planogram_analysis",
         parent=result.group,
     )
     FeatureActionFactory(
@@ -81,7 +76,6 @@ def create_machines_group() -> MachinesGroup:
 
     result.machine_meter_readings_feature = FeatureFactory(
         name="Meter readings",
-        field_name="meter_readings",
         parent=result.group,
     )
     FeatureActionFactory(
@@ -97,10 +91,9 @@ def create_machines_group() -> MachinesGroup:
 def create_products_group() -> ProductsGroup:
     result = ProductsGroup()
 
-    result.group = FeatureFactory.create(name="Products", field_name="products")
+    result.group = FeatureFactory.create(name="Products")
     result.products_feature = FeatureFactory(
         name="Products",
-        field_name="products",
         parent=result.group,
     )
     FeatureActionFactory(feature=result.products_feature, action=ActionEnum.VIEW_ALL)
@@ -115,10 +108,9 @@ def create_products_group() -> ProductsGroup:
 def create_users_group() -> UsersGroup:
     result = UsersGroup()
 
-    result.group = FeatureFactory.create(name="Users", field_name="users")
+    result.group = FeatureFactory.create(name="Users")
     result.users_feature = FeatureFactory(
         name="Users",
-        field_name="users",
         parent=result.group,
     )
     FeatureActionFactory(feature=result.users_feature, action=ActionEnum.VIEW)
@@ -126,7 +118,6 @@ def create_users_group() -> UsersGroup:
 
     result.machine_assignment_feature = FeatureFactory(
         name="Machine Assignment",
-        field_name="machine_assignment",
         parent=result.group,
     )
     FeatureActionFactory(
