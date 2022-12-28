@@ -3,6 +3,7 @@ from typing import AsyncIterator
 from service.api.common.controller_base import ControllerBase
 from service.api.admin.schema import FeatureDTO, FeatureGroupDTO
 from service.dto.models import RoleDTO
+from service.orm import FeatureActionModel
 from service.orm.feature import FeatureModel
 from service.orm.feature_group import FeatureGroupModel
 from service.orm.role import RoleModel
@@ -36,6 +37,7 @@ class DeleteAllData(ControllerBase):
     async def execute(self) -> None:
         async with self.async_session() as session:
             await RoleModel.delete_all(session)
+            await FeatureActionModel.delete_all(session)
             await FeatureModel.delete_all(session)
             await FeatureGroupModel.delete_all(session)
 
