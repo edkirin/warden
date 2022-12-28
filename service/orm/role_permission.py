@@ -36,7 +36,12 @@ class RolePermissionModel(Base):
     async def read_for_role_id(
         cls, session: AsyncSession, role_id: int
     ) -> AsyncIterator[RolePermissionModel]:
-        query = select(cls).where(cls.role_id == role_id)
+        query = (
+            select(cls)
+            .execution_options(populate_existing=True)
+            .options(joinedload(cls.feature))
+            .where(cls.role_id == role_id)
+        )
         stream = await session.stream(query.order_by(cls.id))
         async for row in stream:
             yield row.RolePermissionModel
