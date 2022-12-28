@@ -1,8 +1,14 @@
 from typing import List
 from fastapi import APIRouter
 from fastapi import Depends
-from service.api.permissions.schema import GetFeatureGroupsResponse
-from service.api.permissions.use_cases import ReadAllFeatureGroups
+from service.api.permissions.schema import (
+    GetFeatureGroupsFeaturesResponse,
+    GetFeatureGroupsResponse,
+)
+from service.api.permissions.use_cases import (
+    ReadAllFeatureGroups,
+    ReadFeatureGroupFeatures,
+)
 
 
 router = APIRouter()
@@ -15,8 +21,23 @@ router = APIRouter()
 async def get_feature_groups(
     use_case: ReadAllFeatureGroups = Depends(ReadAllFeatureGroups),
 ):
+    feature_groups = use_case.execute()
     return GetFeatureGroupsResponse(
-        feature_groups=[c async for c in use_case.execute()],
+        feature_groups=[feature_group async for feature_group in feature_groups],
+    )
+
+
+@router.get(
+    "/feature-groups/{feature_group_id}/features",
+    response_model=GetFeatureGroupsFeaturesResponse,
+)
+async def get_feature_group_features(
+    feature_group_id: int,
+    use_case: ReadFeatureGroupFeatures = Depends(ReadFeatureGroupFeatures),
+):
+    features = use_case.execute(feature_group_id=feature_group_id)
+    return GetFeatureGroupsFeaturesResponse(
+        features=[feature async for feature in features],
     )
 
 

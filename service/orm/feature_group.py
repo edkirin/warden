@@ -4,9 +4,12 @@ from dataclasses import field, dataclass
 from typing import AsyncIterator
 from sqlalchemy import Table, Column, Integer, String, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import registry
+from sqlalchemy.orm import relationship
 
-mapper_registry = registry()
+from .base import Base
+from .base import mapper_registry
+
+# from .feature import FeatureModel
 
 
 @mapper_registry.mapped
@@ -23,6 +26,13 @@ class FeatureGroupModel:
     id: int = field(init=False)
     name: str
     field_name: str
+    # features: list[FeatureModel]
+
+    # __mapper_args__ = {  # type ignore
+    #     "properties": {
+    #         "features": relationship(FeatureModel, back_populates="feature_groups"),
+    #     },
+    # }
 
     @classmethod
     async def read_all(cls, session: AsyncSession) -> AsyncIterator[FeatureGroupModel]:
