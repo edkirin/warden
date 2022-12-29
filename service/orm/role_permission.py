@@ -47,7 +47,9 @@ class RolePermissionModel(ModelBase):
             yield row.RolePermissionModel
 
     @classmethod
-    async def read_all(cls, session: AsyncSession) -> AsyncIterator[RolePermissionModel]:
+    async def read_all(
+        cls, session: AsyncSession
+    ) -> AsyncIterator[RolePermissionModel]:
         query = select(cls)
         stream = await session.stream(query.order_by(cls.id))
         async for row in stream:

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 from pydantic import BaseModel
 
@@ -24,14 +24,17 @@ class RoleDTO(BaseDTO):
     name: str
 
 
-class UserPermissionActionDTO(BaseDTO):
+class PermissionActionDTO(BaseDTO):
     action: ActionEnum
     permitted: bool
 
 
 class UserPermissionDTO(BaseDTO):
     name: str
-    actions: List[UserPermissionActionDTO]
+    actions: List[PermissionActionDTO]
+
+
+UserPermissionDict = Dict[str, Dict[ActionEnum, bool]]
 
 
 class UserPermissionsDTO(BaseDTO):

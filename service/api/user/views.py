@@ -18,7 +18,9 @@ async def get_user_permissions(
     controller: ReadUserPermissions = Depends(ReadUserPermissions),
 ) -> GetUserPermissionsResponse:
     try:
-        permissions = await controller.execute(tenant_id=tenant_id, external_user_id=external_user_id)
+        permissions = await controller.execute(
+            tenant_id=tenant_id, external_user_id=external_user_id
+        )
     except UserNotFoundError as ex:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(ex))
 

@@ -25,6 +25,20 @@ class UserPermissionModel(ModelBase):
     feature: FeatureModel = relationship("FeatureModel", uselist=False)
 
     @classmethod
+    async def read_for_user_id(
+        cls, session: AsyncSession, user_id: int
+    ) -> AsyncIterator[UserPermissionModel]:
+        query = (
+            select(cls)
+            .execution_options(populate_existing=True)
+            .options(joinedload(cls.feature))
+            .where(cls.user_id == user_id)
+        )
+        stream = await session.stream(query.order_by(cls.id))
+        async for row in stream:
+            yield row.UserPermissionModel
+
+    @classmethod
     async def read_all(
         cls, session: AsyncSession, parent_id: Optional[int] = None
     ) -> AsyncIterator[UserPermissionModel]:
