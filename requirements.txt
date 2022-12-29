@@ -1,8 +1,8 @@
 fastapi
 uvicorn
 sqlalchemy[asyncio]
-psycopg[binary]
-psycopg-binary
+psycopg2-binary
+asyncpg
 pydantic
 python-dotenv
 factory_boy
