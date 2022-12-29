@@ -2,15 +2,15 @@ from __future__ import annotations
 
 from typing import AsyncIterator, Optional
 
-from sqlalchemy import Column, ForeignKey, Integer, delete, select
+from sqlalchemy import Column, ForeignKey, Integer, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import relationship, selectinload
 
-from .base import Base
+from .base import ModelBase
 from .role import RoleModel
 
 
-class UserModel(Base):
+class UserModel(ModelBase):
     __tablename__ = "users"
 
     id: int = Column(Integer, primary_key=True)
@@ -33,9 +33,3 @@ class UserModel(Base):
         stream = await session.stream(query.order_by(cls.id))
         async for row in stream:
             yield row.UserModel
-
-    @classmethod
-    async def delete_all(cls, session: AsyncSession) -> None:
-        query = delete(cls)
-        await session.execute(query)
-        await session.commit()

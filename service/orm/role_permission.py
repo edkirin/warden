@@ -2,17 +2,17 @@ from __future__ import annotations
 
 from typing import AsyncIterator, Optional
 
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, delete, select
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload, relationship
 
 from service.api.enums import ActionEnum
 
 from . import FeatureModel, RoleModel
-from .base import Base
+from .base import ModelBase
 
 
-class RolePermissionModel(Base):
+class RolePermissionModel(ModelBase):
     __tablename__ = "role_permissions"
 
     id: int = Column(Integer, primary_key=True)
@@ -52,9 +52,3 @@ class RolePermissionModel(Base):
         stream = await session.stream(query.order_by(cls.id))
         async for row in stream:
             yield row.RolePermissionModel
-
-    @classmethod
-    async def delete_all(cls, session: AsyncSession) -> None:
-        query = delete(cls)
-        await session.execute(query)
-        await session.commit()

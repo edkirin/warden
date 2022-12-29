@@ -2,14 +2,13 @@ from __future__ import annotations
 
 from typing import AsyncIterator, Optional
 
-from sqlalchemy import Column, Integer, String, delete, select
+from sqlalchemy import Column, Integer, String, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
 
-from .base import Base
+from .base import ModelBase
 
 
-class RoleModel(Base):
+class RoleModel(ModelBase):
     __tablename__ = "roles"
 
     id: int = Column(Integer, primary_key=True)
@@ -29,9 +28,3 @@ class RoleModel(Base):
         stream = await session.stream(query.order_by(cls.id))
         async for row in stream:
             yield row.RoleModel
-
-    @classmethod
-    async def delete_all(cls, session: AsyncSession) -> None:
-        query = delete(cls)
-        await session.execute(query)
-        await session.commit()

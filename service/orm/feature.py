@@ -1,14 +1,14 @@
 from __future__ import annotations
 
 from typing import AsyncIterator, Optional
-from sqlalchemy import Column, Integer, String, ForeignKey, select, delete
+from sqlalchemy import Column, Integer, String, ForeignKey, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import relationship, joinedload
 
-from .base import Base
+from .base import ModelBase
 
 
-class FeatureModel(Base):
+class FeatureModel(ModelBase):
     __tablename__ = "features"
 
     id: int = Column(Integer, primary_key=True)
@@ -36,9 +36,3 @@ class FeatureModel(Base):
 
         async for row in stream.unique():
             yield row.FeatureModel
-
-    @classmethod
-    async def delete_all(cls, session: AsyncSession) -> None:
-        stmt = delete(cls)
-        await session.execute(stmt)
-        await session.commit()

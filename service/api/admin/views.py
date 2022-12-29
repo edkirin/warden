@@ -8,7 +8,7 @@ router = APIRouter()
 
 
 @router.get(
-    "/features",
+    "/admin/features",
     response_model=GetFeaturesResponse,
 )
 async def get_feature_group_features(
@@ -21,7 +21,7 @@ async def get_feature_group_features(
 
 
 @router.get(
-    "/roles",
+    "/admin/roles",
     response_model=GetRolesResponse,
 )
 async def get_feature_group_features(
@@ -33,7 +33,7 @@ async def get_feature_group_features(
     )
 
 
-@router.post("/initial")
+@router.post("/admin/initial")
 async def create_initial_data(
     delete_all_data_controller: DeleteAllData = Depends(DeleteAllData),
 ):
@@ -43,7 +43,7 @@ async def create_initial_data(
     return {}
 
 
-@router.delete("/initial")
+@router.delete("/admin/delete-all")
 async def delete_all_data(
     controller: DeleteAllData = Depends(DeleteAllData),
 ):

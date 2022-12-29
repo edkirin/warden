@@ -1,16 +1,16 @@
 from __future__ import annotations
 
 from typing import AsyncIterator
-from sqlalchemy import Column, Integer, String, select, delete, ForeignKey
+from sqlalchemy import Column, Integer, String, select, ForeignKey
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload, relationship
 
 from . import FeatureModel
-from .base import Base
+from .base import ModelBase
 from service.api.enums import ActionEnum
 
 
-class FeatureActionModel(Base):
+class FeatureActionModel(ModelBase):
     __tablename__ = "feature_actions"
 
     id: int = Column(Integer, primary_key=True)
@@ -24,9 +24,3 @@ class FeatureActionModel(Base):
         stream = await session.stream(stmt.order_by(cls.id))
         async for row in stream:
             yield row.FeatureActionModel
-
-    @classmethod
-    async def delete_all(cls, session: AsyncSession) -> None:
-        stmt = delete(cls)
-        await session.execute(stmt)
-        await session.commit()

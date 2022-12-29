@@ -1,4 +1,5 @@
-from sqlalchemy import MetaData
+from sqlalchemy import MetaData, delete
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.ext.declarative import declarative_base
 
 convention = {
@@ -11,3 +12,13 @@ convention = {
 
 metadata = MetaData(naming_convention=convention)
 Base = declarative_base(metadata=metadata)
+
+
+class ModelBase(Base):
+    __abstract__ = True
+
+    @classmethod
+    async def delete_all(cls, session: AsyncSession) -> None:
+        query = delete(cls)
+        await session.execute(query)
+        await session.commit()
