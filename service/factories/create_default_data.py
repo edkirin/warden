@@ -168,6 +168,6 @@ def create_default_data():
     RolePermissionFactory(role=role_customer_support, feature=machines_group.devices_feature, action=ActionEnum.VIEW, permitted=True)
     RolePermissionFactory(role=role_customer_support, feature=machines_group.devices_feature, action=ActionEnum.EDIT, permitted=False)
 
-    user1 = UserFactory(tenant_id=666, user_id=123, role=role_guest)
+    user1 = UserFactory(tenant_id=666, external_user_id=123, role=role_guest)
     UserPermissionFactory(user=user1, feature=machines_group.machines_feature, action=ActionEnum.VIEW, permitted=True)
     UserPermissionFactory(user=user1, feature=machines_group.machines_feature, action=ActionEnum.EDIT, permitted=True)

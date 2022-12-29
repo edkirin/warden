@@ -23,16 +23,16 @@ class FeatureModel(ModelBase):
     async def read_all(
         cls, session: AsyncSession, parent_id: Optional[int] = None
     ) -> AsyncIterator[FeatureModel]:
-        stmt = (
+        query = (
             select(cls)
             .execution_options(populate_existing=True)
             .options(joinedload(cls.parent))
         )
 
         if parent_id is not None:
-            stmt = stmt.where(cls.parent_id == parent_id)
+            query = query.where(cls.parent_id == parent_id)
 
-        stream = await session.stream(stmt.order_by(cls.id))
+        stream = await session.stream(query.order_by(cls.id))
 
         async for row in stream.unique():
             yield row.FeatureModel

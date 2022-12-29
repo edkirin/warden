@@ -15,15 +15,15 @@ class UserModel(ModelBase):
 
     id: int = Column(Integer, primary_key=True)
     tenant_id: int = Column(Integer)
-    user_id: int = Column(Integer)
+    external_user_id: int = Column(Integer)
     role_id: int = Column(Integer, ForeignKey("roles.id"))
     role: RoleModel = relationship("RoleModel", uselist=False)
 
     @classmethod
-    async def get_by_user_id(
-        cls, session: AsyncSession, tenant_id: int, user_id: int
+    async def get_by_external_user_id(
+        cls, session: AsyncSession, tenant_id: int, external_user_id: int
     ) -> Optional[UserModel]:
-        query = select(cls).where(cls.tenant_id == tenant_id, cls.user_id == user_id)
+        query = select(cls).where(cls.tenant_id == tenant_id, cls.external_user_id == external_user_id)
         result = (await session.execute(query)).first()
         return result.UserModel if result else None
 

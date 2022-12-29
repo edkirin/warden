@@ -19,12 +19,12 @@ CREATE TABLE public.features (
 CREATE TABLE public.users (
 	id serial4 NOT NULL,
 	tenant_id int8 NOT NULL,
-	user_id int8 NOT NULL,
+	external_user_id int8 NOT NULL,
 	role_id int8 NULL,
 	CONSTRAINT users_pk PRIMARY KEY (id),
 	CONSTRAINT users_fk FOREIGN KEY (role_id) REFERENCES public.roles(id) ON DELETE SET NULL
 );
-CREATE UNIQUE INDEX users_tenant_id_idx ON public.users USING btree (tenant_id, user_id);
+CREATE UNIQUE INDEX users_tenant_id_idx ON public.users USING btree (tenant_id, external_user_id);
 
 
 CREATE TABLE public.role_permissions (

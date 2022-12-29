@@ -10,13 +10,13 @@ PermissionsDict = Dict[str, List[UserPermissionActionDTO]]
 
 
 class ReadUserPermissions(ControllerBase):
-    async def execute(self, tenant_id: int, user_id: int) -> List[UserPermissionDTO]:
+    async def execute(self, tenant_id: int, external_user_id: int) -> List[UserPermissionDTO]:
         async with self.async_session() as session:
-            user = await UserModel.get_by_user_id(
-                session, tenant_id=tenant_id, user_id=user_id
+            user = await UserModel.get_by_external_user_id(
+                session, tenant_id=tenant_id, external_user_id=external_user_id
             )
             if user is None:
-                raise UserNotFoundError(tenant_id=tenant_id, user_id=user_id)
+                raise UserNotFoundError(tenant_id=tenant_id, external_user_id=external_user_id)
 
             permissions_dict: PermissionsDict = {}
 

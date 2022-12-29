@@ -12,5 +12,5 @@ class ObjectNotFoundError(BaseException):
 
 
 class UserNotFoundError(ObjectNotFoundError):
-    def __init__(self, tenant_id: int, user_id: int):
-        self.message = f"User with tenant_id {tenant_id} and user_id {user_id} not found"
+    def __init__(self, tenant_id: int, external_user_id: int):
+        self.message = f"User with tenant_id {tenant_id} and external_user_id {external_user_id} not found"

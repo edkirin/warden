@@ -20,7 +20,7 @@ class FeatureActionModel(ModelBase):
 
     @classmethod
     async def read_all(cls, session: AsyncSession) -> AsyncIterator[FeatureActionModel]:
-        stmt = select(cls).options(selectinload(cls.feature_group))
-        stream = await session.stream(stmt.order_by(cls.id))
+        query = select(cls).options(selectinload(cls.feature_group))
+        stream = await session.stream(query.order_by(cls.id))
         async for row in stream:
             yield row.FeatureActionModel
