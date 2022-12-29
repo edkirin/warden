@@ -25,7 +25,7 @@ class RoleModel(Base):
 
     @classmethod
     async def read_all(cls, session: AsyncSession) -> AsyncIterator[RoleModel]:
-        query = select(cls).options(selectinload(cls.feature_group))
+        query = select(cls)
         stream = await session.stream(query.order_by(cls.id))
         async for row in stream:
             yield row.RoleModel

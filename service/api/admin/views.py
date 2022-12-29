@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 
-from service.api.admin.controllers import DeleteAllData, ReadFeatures
-from service.api.admin.schema import GetFeaturesResponse
+from service.api.admin.controllers import DeleteAllData, ReadFeatures, ReadRoles
+from service.api.admin.schema import GetFeaturesResponse, GetRolesResponse
 from service.factories.create_default_data import create_default_data
 
 router = APIRouter()
@@ -17,6 +17,19 @@ async def get_feature_group_features(
     features = controller.execute()
     return GetFeaturesResponse(
         features=[feature async for feature in features],
+    )
+
+
+@router.get(
+    "/roles",
+    response_model=GetRolesResponse,
+)
+async def get_feature_group_features(
+    controller: ReadRoles = Depends(ReadRoles),
+):
+    roles = controller.execute()
+    return GetRolesResponse(
+        roles=[role async for role in roles],
     )
 
 
