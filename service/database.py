@@ -1,18 +1,25 @@
 import logging
 from typing import AsyncIterator, Type
+
+from sqlalchemy.engine import URL
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
+
 from service.config import settings
 
 logger = logging.getLogger(__name__)
 
-SQLALCHEMY_DATABASE_URL = (
-    f"postgresql+asyncpg://{settings.DB_USER}:{settings.DB_PASSWORD}"
-    f"@{settings.DB_HOST}:{settings.DB_PORT}/{settings.DB_NAME}"
+db_connect_url = URL.create(
+    drivername="postgresql+asyncpg",
+    username=settings.DB_USER,
+    password=settings.DB_PASSWORD,
+    host=settings.DB_HOST,
+    port=settings.DB_PORT,
+    database=settings.DB_NAME,
 )
 
-async_engine = create_async_engine(SQLALCHEMY_DATABASE_URL)
+async_engine = create_async_engine(url=db_connect_url)
 
 AsyncSessionLocal = sessionmaker(
     bind=async_engine,
@@ -20,8 +27,6 @@ AsyncSessionLocal = sessionmaker(
     future=True,
     class_=AsyncSession,
 )
-
-AsyncSessionClass = Type[AsyncSession]
 
 
 async def get_session() -> AsyncIterator[sessionmaker]:
