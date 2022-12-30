@@ -28,6 +28,8 @@ AsyncSessionLocal = sessionmaker(
     class_=AsyncSession,
 )
 
+AsyncSessionClass = Type[AsyncSession]
+
 
 async def get_session() -> AsyncIterator[sessionmaker]:
     try:
