@@ -21,7 +21,7 @@ class MachinesGroup:
 
 class ProductsGroup:
     group: FeatureModel
-    users_feature: FeatureModel
+    products_feature: FeatureModel
 
 
 class UsersGroup:
@@ -161,6 +161,9 @@ def create_default_data():
     RolePermissionFactory(role=role_guest, feature=machines_group.planogram_analysis_feature, action=ActionEnum.EDIT, permitted=False)
     RolePermissionFactory(role=role_guest, feature=machines_group.machine_meter_readings_feature, action=ActionEnum.VIEW, permitted=True)
     RolePermissionFactory(role=role_guest, feature=machines_group.machine_meter_readings_feature, action=ActionEnum.EDIT, permitted=False)
+    RolePermissionFactory(role=role_guest, feature=products_group.group, action=ActionEnum.VIEW_ALL, permitted=False)
+    RolePermissionFactory(role=role_guest, feature=products_group.group, action=ActionEnum.VIEW_ASSIGNED, permitted=True)
+    RolePermissionFactory(role=role_guest, feature=products_group.group, action=ActionEnum.EDIT, permitted=False)
 
     role_customer_support = RoleFactory(name="Customer Support")
     RolePermissionFactory(role=role_customer_support, feature=machines_group.machines_feature, action=ActionEnum.VIEW, permitted=False)
