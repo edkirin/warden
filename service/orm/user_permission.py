@@ -53,5 +53,5 @@ class UserPermissionModel(ModelBase):
 
         stream = await session.stream(query.order_by(cls.id))
 
-        async for row in stream.unique():
+        async for row in stream:
             yield row.UserPermissionModel
